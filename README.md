@@ -2,6 +2,8 @@
 
 hapi plugin for Triton authentication.
 
+[![Build Status](https://secure.travis-ci.org/joyent/hapi-triton-auth.svg)](http://travis-ci.org/joyent/hapi-triton-auth)
+
 ## Options
 
 - `cookieName`: name of session cookie, default is 'sso'
