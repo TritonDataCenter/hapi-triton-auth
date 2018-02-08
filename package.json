@@ -1,0 +1,27 @@
+{
+  "name": "hapi-triton-auth",
+  "version": "0.0.0",
+  "description": "hapi auth plugin for Triton SSO",
+  "main": "lib",
+  "scripts": {
+    "lint": "belly-button",
+    "pretest": "npm run lint",
+    "test": "lab -t 100"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "belly-button": "4.x.x",
+    "code": "5.x.x",
+    "hapi": "^17.x.x",
+    "lab": "15.x.x"
+  },
+  "dependencies": {
+    "boom": "7.1.x",
+    "bounce": "1.2.x",
+    "cryptiles": "4.1.x",
+    "hoek": "5.0.x",
+    "wreck": "14.0.x"
+  }
+}
