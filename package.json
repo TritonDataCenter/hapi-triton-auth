@@ -2,6 +2,7 @@
   "name": "hapi-triton-auth",
   "version": "0.0.0",
   "description": "hapi auth plugin for Triton SSO",
+  "repository": "git://github.com/joyent/hapi-triton-auth",
   "main": "lib",
   "scripts": {
     "lint": "belly-button",
@@ -9,7 +10,7 @@
     "test": "lab -t 100"
   },
   "keywords": [],
-  "author": "",
+  "author": "wyatt",
   "license": "MPL-2.0",
   "devDependencies": {
     "belly-button": "4.x.x",
