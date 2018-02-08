@@ -1,6 +1,6 @@
 {
   "name": "hapi-triton-auth",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "hapi auth plugin for Triton SSO",
   "repository": "git://github.com/joyent/hapi-triton-auth",
   "main": "lib",
