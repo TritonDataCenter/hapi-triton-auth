@@ -273,7 +273,6 @@ it('will set the correct cookie and token expiration time based on cookie.ttl', 
   await server.initialize();
   const res = await server.inject('/');
   expect(res.statusCode).to.equal(302);
-  expect(res.headers.location).to.contain('expires=');
 
   const authRes = await server.inject('/?token=something');
   expect(authRes.payload).to.equal(account.id);
