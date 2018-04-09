@@ -152,6 +152,63 @@ it('will login the local user if in dev mode', async () => {
   await apiServer.stop();
 });
 
+it('will decorate request.sso', async () => {
+  const account = {
+    id: 'b89d9dd3-62ce-4f6f-eb0d-f78e57d515d9',
+    login: 'barbar',
+    email: 'barbar@example.com',
+    companyName: 'Example Inc',
+    firstName: 'BarBar',
+    lastName: 'Jinks',
+    phone: '123-456-7890',
+    updated: '2015-12-21T11:48:54.884Z',
+    created: '2015-12-21T11:48:54.884Z'
+  };
+
+  const apiServer = Hapi.server();
+  apiServer.route({
+    method: 'GET',
+    path: '/my',
+    handler: function (request, h) {
+      return account;
+    }
+  });
+
+  await apiServer.start();
+  const server = Hapi.server();
+
+  const options = {
+    baseUrl: 'http://localhost',
+    ssoUrl: 'http://localhost',
+    apiBaseUrl: `http://localhost:${apiServer.info.port}`,
+    isDev: true,
+    keyPath,
+    keyId
+  };
+
+  await server.register({ plugin: SSO, options });
+
+  server.route({
+    method: 'GET',
+    path: '/',
+    config: {
+      auth: 'sso',
+      handler: function (request, h) {
+        expect(request.sso).to.exist();
+        expect(request.sso.getSsoUrl);
+        expect(request.sso.getSsoUrl('/', '/resetpassword')).to.contain('http://localhost/resetpassword?');
+        return request.auth.credentials.profile;
+      }
+    }
+  });
+
+  await server.initialize();
+  const res = await server.inject('/');
+  expect(res.statusCode).to.equal(200);
+  expect(res.payload).to.contain(account.id);
+  await apiServer.stop();
+});
+
 it('handles errors when not in dev mode not able to connect to sso service', async () => {
   const server = Hapi.server();
 
@@ -324,7 +381,7 @@ it('throws when permissions cannot be stringified', async () => {
   expect(thrown).to.be.true();
 });
 
-it('throws isDev is true in production', async () => {
+it('throws when isDev is true in NODE_ENV=production', async () => {
   const options = {
     baseUrl: 'http://localhost',
     ssoUrl: 'http://localhost',

@@ -23,4 +23,8 @@ hapi plugin for Triton authentication.
   - `ttl`: number of milliseconds until the cookie and token expires, default is 14400000 (4 hours)
   - `domain`: origin of the cookie, default is 'localhost'
 
+## Usage
 
+The hapi route handler will have it's `request` argument decorated with a property named `sso` that is a reference to the class exported in `/lib/sso.js`. This class includes helper methods that are meant to assist you in interacting with SSO. Below are the supported functions you can use:
+
+`getSsoUrl(returnto, ssoPath)` - return signed URL to use for making a request to SSO
