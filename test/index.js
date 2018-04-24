@@ -5,6 +5,7 @@ const Boom = require('boom');
 const Code = require('code');
 const Hapi = require('hapi');
 const Lab = require('lab');
+const ThinMint = require('thin-mint');
 const SSO = require('../');
 
 
@@ -431,7 +432,7 @@ it('will set the correct cookie and token expiration time based on cookie.ttl', 
   const server = Hapi.server();
   const options = {
     cookie: {
-      ttl: 12000   // 2 minutes
+      ttl: 120000   // 2 minutes
     },
     baseUrl: 'http://localhost',
     ssoUrl: `http://localhost:${ssoServer.info.port}`,
@@ -453,15 +454,17 @@ it('will set the correct cookie and token expiration time based on cookie.ttl', 
     }
   });
 
-  const expires = new Date(new Date() + 12000).toUTCString();
   await server.initialize();
   const res = await server.inject('/');
   expect(res.statusCode).to.equal(302);
 
   const authRes = await server.inject('/?token=something');
+  const expires = new Date().getTime() + 120000;
   expect(authRes.payload).to.equal(account.id);
-  // ignore the milliseconds and GMT part
-  expect(authRes.headers['set-cookie'][0]).to.contain(`Expires=${expires.substr(0, expires.length - 8)}`);
+  const cookie = new ThinMint(authRes.headers['set-cookie'][0]);
+  const tolerance = 1000; // Allow some tolerance for slow CI machines.
+  expect(Math.abs(cookie.expiration - expires)).to.be.lessThan(tolerance);
+
   await ssoServer.stop();
   await apiServer.stop();
 });

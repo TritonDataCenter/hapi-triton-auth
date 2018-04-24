@@ -16,7 +16,8 @@
     "belly-button": "4.x.x",
     "code": "5.x.x",
     "hapi": "^17.x.x",
-    "lab": "15.x.x"
+    "lab": "15.x.x",
+    "thin-mint": "1.x.x"
   },
   "dependencies": {
     "boom": "7.1.x",
